@@ -1,4 +1,3 @@
-
 import java.awt.*; 
 import java.awt.event.*; 
 import javax.swing.*; 
@@ -7,8 +6,10 @@ class GuiContador extends JFrame {
   private int numero;
   private JLabel numeroEtiqueta;
   private JButton botonIncrementar,botonDecrementar;
-  public GuiContador() {
+  private int valMin,valMax;
+  public GuiContador(int min,int max) {
         super ("Contador");
+        valMin = min; valMax = max;
 //Incializa variables
 	numero = 0;
 //Establece los valores de los atributos del frame
@@ -30,6 +31,7 @@ private void hacerGUI(){
   botonDecrementar = new JButton("Decrementar");
   OyenteBotonD decrementar = new OyenteBotonD();
   botonDecrementar.addActionListener(decrementar);
+  botonDecrementar.setEnabled(false);
 //Inserta las componentes en el panel del frame	    
   getContentPane().add(numeroEtiqueta);
   getContentPane().add(botonIncrementar);
@@ -39,13 +41,17 @@ private void hacerGUI(){
  private class OyenteBotonI implements ActionListener {
      public void actionPerformed(ActionEvent event) {
       numero++;
+      if(numero >= valMin)botonDecrementar.setEnabled(true);
+      if(numero == valMax)botonIncrementar.setEnabled(false);
       numeroEtiqueta.setText("" + numero);
       }  
     }  
  private class OyenteBotonD implements ActionListener {
      public void actionPerformed(ActionEvent event) {
-      numero--;
-      numeroEtiqueta.setText("" + numero);
+        numero--;
+        if(numero == valMin)botonDecrementar.setEnabled(false);
+        if(numero <= valMax)botonIncrementar.setEnabled(true);
+        numeroEtiqueta.setText("" + numero);
       }  
     }
 }
