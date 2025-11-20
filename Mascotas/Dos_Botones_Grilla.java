@@ -1,4 +1,3 @@
-
 import java.awt.*; 
 import java.awt.event.*; 
 import javax.swing.*; 
@@ -26,8 +25,8 @@ private void armaPanelBotones(){
 
   panelControl = new JPanel();
   panelControl.setBackground(Color.BLUE);
-  botonPerro = new JButton("Perro");
-  botonGato = new JButton("Gato"); 
+  botonPerro = new MiBoton("Perro");
+  botonGato = new MiBoton("Gato"); 
   botonPerro.setPreferredSize(new Dimension(124, 50));
   botonPerro.setSize(150, 50);
   botonPerro.setBorder(BorderFactory.createCompoundBorder(new LineBorder(Color.GREEN, 3, false),null));
@@ -37,6 +36,7 @@ private void armaPanelBotones(){
   botonGato.setSize(150, 50);
   botonGato.setBorder(BorderFactory.createCompoundBorder(new LineBorder(Color.GREEN, 3, false),null));
   OyenteBotonG oyenteGato = new OyenteBotonG();
+  botonGato.addActionListener(oyenteGato);
   
 //Insertar los botones en el panel de control
   panelControl.add(botonPerro);
@@ -48,18 +48,19 @@ private void armaPanelImagen(){
   panelImagen = new JPanel();
   etiqueta = new MiEtiqueta();
   panelImagen.add(etiqueta);
-
+  etiqueta.setIcon(new ImageIcon("Mascotas/perro.gif"));
+  etiqueta.setText("Jack");
 }
  
 private class OyenteBotonP implements ActionListener {
     public void actionPerformed(ActionEvent e) {
-    etiqueta.setIcon(new ImageIcon("perro.gif"));
+    etiqueta.setIcon(new ImageIcon("Mascotas/perro.gif"));
     etiqueta.setText("Jack");
    }  
 }
  private class OyenteBotonG implements ActionListener {
     public void actionPerformed(ActionEvent e) {
-    etiqueta.setIcon(new ImageIcon("gato.gif"));
+    etiqueta.setIcon(new ImageIcon("Mascotas/gato.gif"));
     etiqueta.setText("Tom");
    }  
  }

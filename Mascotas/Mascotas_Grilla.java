@@ -1,4 +1,3 @@
-
 import java.awt.*; 
 class Mascotas_Grilla {
   public static void main(String args[ ]) {
