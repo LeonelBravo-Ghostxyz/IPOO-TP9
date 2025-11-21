@@ -1,85 +1,80 @@
 package Bebidas;
-
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*; 
 
-public class GUIJugoYCafe extends JFrame {
+public class GUIJugoYCafe extends JFrame{
 
     // << Atributos >>
-    private int contJugo, contCafe;
-    private JLabel etiquetaContadorJugo, etiquetaContadorCafe, etiquetaImagen;
-    private JButton botonJugo, botonCafe;
-    private String rutaImagen;
+    private JLabel imagenLabel;
+    private JButton botonCafe,botonJugo;
+    private int contCafe,contJugo;
+    private String strImage;
     private Container container = getContentPane();
+    private Panel buttonPanel = new Panel(),imagePanel = new Panel();
 
-    public GUIJugoYCafe() {
-        // 3 filas, 3 columnas
-        setLayout(new GridLayout(3, 3)); 
-        setSize(800, 480);
+    // << Constructor >>
+    public GUIJugoYCafe(){
+        setLayout(new BoxLayout(container,BoxLayout.Y_AXIS));
+        setSize(new Dimension(640, 480));
         setDefaultCloseOperation(EXIT_ON_CLOSE);
-        
-        contJugo = 0;
-        contCafe = 0;
-        rutaImagen = "Bebidas/Jugo.gif"; 
-        
+
+        contCafe = 0;contJugo = 0; strImage = "Bebidas/Cafe.gif";
+
         hacerGUI();
     }
 
-    private void hacerGUI() {
-        // 1. Inicializamos los componentes
-        etiquetaContadorJugo = new JLabel("Jugo: " + contJugo, SwingConstants.CENTER);
-        etiquetaContadorCafe = new JLabel("Cafe: " + contCafe, SwingConstants.CENTER);
-        
-        etiquetaImagen = new JLabel();
-        etiquetaImagen.setHorizontalAlignment(SwingConstants.CENTER);
+    private void hacerGUI(){
 
-        etiquetaImagen.setIcon(new ImageIcon(rutaImagen));
+        // Establezco los valores predeterminados de imagenLabel+
+        imagenLabel = new JLabel("Cafe: "+contCafe);
+        imagenLabel.setIcon(new ImageIcon(""+strImage));
+        imagenLabel.setVerticalTextPosition(JLabel.TOP);
+        imagenLabel.setHorizontalTextPosition(JLabel.CENTER);
+        imagenLabel.setVerticalAlignment(JLabel.TOP);
+        imagenLabel.setHorizontalAlignment(JLabel.CENTER);
+        imagenLabel.setSize(new Dimension(40, 60));
+        imagePanel.add(imagenLabel);
+
+        // Implementacion de Botones
+        botonCafe = new JButton("Cafe");
+        botonCafe.setHorizontalAlignment(JLabel.CENTER);
+        ListenerCafe oyenteCafe = new ListenerCafe();
+        botonCafe.addActionListener(oyenteCafe);
 
         botonJugo = new JButton("Jugo");
-        botonJugo.addActionListener(new ListenerJugo());
+        botonJugo.setHorizontalAlignment(JLabel.CENTER);
+        ListenerJugo oyenteJugo = new ListenerJugo();
+        botonJugo.addActionListener(oyenteJugo);
 
-        botonCafe = new JButton("Cafe");
-        botonCafe.addActionListener(new ListenerCafe());
+        // Añadimos los botones al panel de botones
+        buttonPanel.add(botonCafe);
+        buttonPanel.add(botonJugo);
 
-        // << INSERTAR EN EL ORDEN DEL GRID (De Izquierda a Derecha) >>
+        // Añadimos nuestros componentes a la pantalla
+        container.add(imagenLabel);
+        container.add(buttonPanel);
 
-        // --- FILA 1 ---
-        container.add(etiquetaContadorJugo);      // Pos 1 (0,0)
-        container.add(new JLabel(""));            // Pos 2 (0,1) - VACÍO
-        container.add(etiquetaContadorCafe);      // Pos 3 (0,2)
-
-        // --- FILA 2 ---
-        container.add(new JLabel(""));            // Pos 4 (1,0) - VACÍO
-        container.add(etiquetaImagen);            // Pos 5 (1,1) - CENTRO
-        container.add(new JLabel(""));            // Pos 6 (1,2) - VACÍO
-
-        // --- FILA 3 ---
-        container.add(botonJugo);                 // Pos 7 (2,0)
-        container.add(new JLabel(""));            // Pos 8 (2,1) - VACÍO
-        container.add(botonCafe);                 // Pos 9 (2,2)
-    }
-
-    private class ListenerJugo implements ActionListener {
-        public void actionPerformed(ActionEvent e) {
-            if (!rutaImagen.equals("Bebidas/Jugo.gif")) {
-                rutaImagen = "Bebidas/Jugo.gif";
-                etiquetaImagen.setIcon(new ImageIcon(rutaImagen));
-            }
-            contJugo++;
-            etiquetaContadorJugo.setText("Jugo: " + contJugo);
-        }
     }
 
     private class ListenerCafe implements ActionListener {
-        public void actionPerformed(ActionEvent e) {
-            if (!rutaImagen.equals("Bebidas/Cafe.gif")) {
-                rutaImagen = "Bebidas/Cafe.gif";
-                etiquetaImagen.setIcon(new ImageIcon(rutaImagen));
-            }
+        public void actionPerformed(ActionEvent e){
             contCafe++;
-            etiquetaContadorCafe.setText("Cafe: " + contCafe);
+            if(strImage.equals("Bebidas/Jugo.gif")){
+                strImage = "Bebidas/Cafe.gif";
+            }
+            imagenLabel.setIcon(new ImageIcon(""+strImage));
+            imagenLabel.setText("Cafe: "+contCafe);
+        }
+    }
+    private class ListenerJugo implements ActionListener {
+        public void actionPerformed(ActionEvent e){
+            contJugo++;
+            if(strImage.equals("Bebidas/Cafe.gif")){
+                strImage = "Bebidas/Jugo.gif";
+            }
+            imagenLabel.setIcon(new ImageIcon(""+strImage));
+            imagenLabel.setText("Jugo: "+contJugo);
         }
     }
 }
