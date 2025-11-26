@@ -6,20 +6,20 @@ import java.awt.event.*;
 public class GUIJugoYCafe extends JFrame{
 
     // << Atributos >>
-    private JLabel imagenLabel;
+    private JLabel imagenLabel,ventasCafeLabel, ventasJugoLabel;
     private JButton botonCafe,botonJugo;
     private int contCafe,contJugo;
     private String strImage;
     private Container container = getContentPane();
-    private Panel buttonPanel = new Panel(),imagePanel = new Panel();
+    private Panel buttonPanel = new Panel(),imagePanel = new Panel(), ventasPanel = new Panel();
 
     // << Constructor >>
     public GUIJugoYCafe(){
         setLayout(new BoxLayout(container,BoxLayout.Y_AXIS));
-        setSize(new Dimension(640, 480));
+        setSize(new Dimension(480, 800));
         setDefaultCloseOperation(EXIT_ON_CLOSE);
 
-        contCafe = 0;contJugo = 0; strImage = "Bebidas/Cafe.gif";
+        contCafe = 0;contJugo = 0; strImage = "";
 
         hacerGUI();
     }
@@ -27,14 +27,23 @@ public class GUIJugoYCafe extends JFrame{
     private void hacerGUI(){
 
         // Establezco los valores predeterminados de imagenLabel+
-        imagenLabel = new JLabel("Cafe: "+contCafe);
+        imagenLabel = new JLabel("");
         imagenLabel.setIcon(new ImageIcon(""+strImage));
         imagenLabel.setVerticalTextPosition(JLabel.TOP);
         imagenLabel.setHorizontalTextPosition(JLabel.CENTER);
         imagenLabel.setVerticalAlignment(JLabel.TOP);
         imagenLabel.setHorizontalAlignment(JLabel.CENTER);
-        imagenLabel.setSize(new Dimension(40, 60));
         imagePanel.add(imagenLabel);
+        imagenLabel.setBorder(BorderFactory.createEmptyBorder(50, 0, 10, 0));
+        imagenLabel.setBackground(Color.GRAY);
+
+        // Implementación del Panel Central (Contará las ventas)
+        ventasCafeLabel = new JLabel();
+        ventasJugoLabel = new JLabel();
+        ventasPanel.setLayout(new GridLayout(0,1));
+        ventasPanel.add(ventasCafeLabel);
+        ventasPanel.add(ventasJugoLabel);
+        ventasPanel.setBackground(Color.WHITE);
 
         // Implementacion de Botones
         botonCafe = new JButton("Cafe");
@@ -52,7 +61,9 @@ public class GUIJugoYCafe extends JFrame{
         buttonPanel.add(botonJugo);
 
         // Añadimos nuestros componentes a la pantalla
+        container.setBackground(Color.GRAY);
         container.add(imagenLabel);
+        container.add(ventasPanel);
         container.add(buttonPanel);
 
     }
@@ -60,21 +71,29 @@ public class GUIJugoYCafe extends JFrame{
     private class ListenerCafe implements ActionListener {
         public void actionPerformed(ActionEvent e){
             contCafe++;
-            if(strImage.equals("Bebidas/Jugo.gif")){
+            if(!strImage.equals("Bebidas/Cafe.gif")){
                 strImage = "Bebidas/Cafe.gif";
             }
             imagenLabel.setIcon(new ImageIcon(""+strImage));
-            imagenLabel.setText("Cafe: "+contCafe);
+            imagenLabel.setText("Cafe");
+            ventasCafeLabel.setText("Cantidad de Cafes vendidos: "+contCafe);
+            if(contCafe >= 10){
+                botonCafe.setEnabled(false);
+            }
         }
     }
     private class ListenerJugo implements ActionListener {
         public void actionPerformed(ActionEvent e){
             contJugo++;
-            if(strImage.equals("Bebidas/Cafe.gif")){
+            if(!strImage.equals("Bebidas/Jugo.gif")){
                 strImage = "Bebidas/Jugo.gif";
             }
             imagenLabel.setIcon(new ImageIcon(""+strImage));
-            imagenLabel.setText("Jugo: "+contJugo);
+            imagenLabel.setText("Jugo");
+            ventasJugoLabel.setText("Cantidad de Jugos vendidos: "+contJugo);
+            if(contJugo >= 10){
+                botonJugo.setEnabled(false);
+            }
         }
     }
 }
